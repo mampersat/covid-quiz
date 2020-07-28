@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'constants.dart';
-import 'dart:io';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +33,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final random = new Random();
   Risk risk1, risk2, correctRisk;
   int correct = 0, incorrect = 0;
-  Color color1 = Colors.white, color2 = Colors.white;
+  Color color1 = Colors.white;
+  Color color2 = Colors.white;
 
   bool lastGuessWrong = false;
 
@@ -60,8 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
       if (risk == correctRisk) {
         if (!lastGuessWrong) correct++;
         lastGuessWrong = false;
-        color1 = Colors.white;
-        color2 = Colors.white;
+        color1 = Theme.of(context).canvasColor;
+        color2 = Theme.of(context).canvasColor;
         setQuestion();
       } else {
         incorrect++;
@@ -89,37 +89,53 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
-              child: Text(
-                'Which is more risky',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: FlatButton(
-                child: Text(risk1.title,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 30.0)),
-                onPressed: () {
-                  checkAnswer(risk1);
-                },
-                color: color1,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: FlatButton(
+              child: Center(
                 child: Text(
-                  risk2.title,
+                  'Which is more risky',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 30.0),
+                  style: Theme.of(context).textTheme.headline4,
                 ),
-                color: color2,
-                onPressed: () {
-                  checkAnswer(risk2);
-                },
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Card(
+                  elevation: 20.0,
+                  child: FlatButton(
+                    child: Text(risk1.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 30.0)),
+                    onPressed: () {
+                      checkAnswer(risk1);
+                    },
+                    color: color1,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Card(
+                  elevation: 20.0,
+                  child: FlatButton(
+                    child: Text(
+                      risk2.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 30.0),
+                    ),
+                    color: color2,
+                    onPressed: () {
+                      checkAnswer(risk2);
+                    },
+                  ),
+                ),
               ),
             ),
             Expanded(
@@ -128,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   Text('Right: $correct', style: TextStyle(fontSize: 25.0)),
                   Text('Wrong: $incorrect', style: TextStyle(fontSize: 25.0)),
-                  FlatButton(
+                  OutlineButton(
                     child: Text('Reset'),
                     onPressed: resetScore,
                   )
