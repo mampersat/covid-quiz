@@ -57,6 +57,9 @@ class _MyHomePageState extends State<MyHomePage>
 
   void setQuestion() {
     setState(() {
+      color1 = Theme.of(context).canvasColor;
+      color2 = Theme.of(context).canvasColor;
+
       risk1 = risks[random.nextInt(risks.length)];
       do {
         risk2 = risks[random.nextInt(risks.length)];
@@ -70,13 +73,21 @@ class _MyHomePageState extends State<MyHomePage>
   void checkAnswer(risk) async {
     setState(() {
       if (risk == correctRisk) {
+        // Got it RIGHT
+
+        correct++;
+        if (risk1 == correctRisk)
+          color2 = Colors.green;
+        else
+          color1 = Colors.green;
+        lastGuessWrong = true;
         if (!lastGuessWrong) correct++;
         lastGuessWrong = false;
-        color1 = Theme.of(context).canvasColor;
-        color2 = Theme.of(context).canvasColor;
         _controller.forward();
         //setQuestion();
       } else {
+        // Got it WRONG
+
         incorrect++;
         if (risk1 == correctRisk)
           color1 = Colors.red;
@@ -96,7 +107,6 @@ class _MyHomePageState extends State<MyHomePage>
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        print('setting questions');
         setQuestion();
       }
     });
@@ -105,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage>
       end: const Offset(1.5, 0.0),
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.elasticIn,
+      curve: Curves.easeInBack,
     ));
 
     _offsetAnimation2 = Tween<Offset>(
@@ -113,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage>
       end: const Offset(-1.5, 0.0),
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.elasticIn,
+      curve: Curves.easeInBack,
     ));
 
     setQuestion();
