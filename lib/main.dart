@@ -14,8 +14,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Risk Quiz',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        //).dark().copyWith(
+        scaffoldBackgroundColor: kBackgroundColor,
+        backgroundColor: kBackgroundColor,
+        primaryColor: kPrimaryColor,
+        //accentColor: Color(0xff283618),
+        buttonColor: kColor2,
+        sliderTheme: SliderThemeData(
+          thumbColor: kPrimaryColor,
+          activeTrackColor: kAccentColor,
+        ),
       ),
       initialRoute: 'home',
       routes: {
@@ -55,19 +63,22 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
-  void setQuestion() {
-    setState(() {
-      color1 = Theme.of(context).canvasColor;
-      color2 = Theme.of(context).canvasColor;
+  void setQuestion({animate = true}) {
+    risk1 = risks[random.nextInt(risks.length)];
+    do {
+      risk2 = risks[random.nextInt(risks.length)];
+    } while (risk1 == risk2 || risk1.value == risk2.value);
 
-      risk1 = risks[random.nextInt(risks.length)];
-      do {
-        risk2 = risks[random.nextInt(risks.length)];
-      } while (risk1 == risk2 || risk1.value == risk2.value);
+    correctRisk = risk1.value > risk2.value ? risk1 : risk2;
 
-      correctRisk = risk1.value > risk2.value ? risk1 : risk2;
-      _controller.reverse();
-    });
+    if (animate) {
+      setState(() {
+        color1 = Theme.of(context).canvasColor;
+        color2 = Theme.of(context).canvasColor;
+
+        _controller.reverse();
+      });
+    }
   }
 
   void checkAnswer(risk) async {
@@ -110,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage>
         setQuestion();
       }
     });
+
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(1.5, 0.0),
@@ -126,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage>
       curve: Curves.easeInBack,
     ));
 
-    setQuestion();
+    setQuestion(animate: false);
   }
 
   @override
