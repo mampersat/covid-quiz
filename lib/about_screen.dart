@@ -33,8 +33,13 @@ class _AboutScreenState extends State<AboutScreen> {
                 fontSize: 20,
               ),
             ),
-            FlatButton(
-              child: Text('Texas Medicine Article'),
+            RaisedButton(
+              child: Text(
+                'Texas Medicine Article',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               onPressed: launchURL,
             ),
           ],

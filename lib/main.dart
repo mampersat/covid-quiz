@@ -87,10 +87,15 @@ class _MyHomePageState extends State<MyHomePage>
         // Got it RIGHT
 
         correct++;
+
+        // Set less risky choice to green
+        /*
         if (risk1 == correctRisk)
           color2 = Colors.green;
         else
           color1 = Colors.green;
+        */
+
         lastGuessWrong = true;
         if (!lastGuessWrong) correct++;
         lastGuessWrong = false;
